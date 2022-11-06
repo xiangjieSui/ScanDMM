@@ -5,38 +5,56 @@ from suppor_lib import *
 
 
 class Inference():
-    def __init__(self, model, img_path, n_scanpaths, length, output_path):
+    def __init__(self, model, img_path, n_scanpaths, length, output_path, if_plot=False):
         self.dmm = model
         self.img_path = img_path
         self.n_scanpaths = n_scanpaths
         self.length = length
         self.output_path = output_path
+        self.if_plot = if_plot
 
     def create_random_starting_points(self, num_points):
+        # randomly sampling starting points from an equator bias map
         y, x = [], []
+
         for i in range(num_points):
             while True:
                 temp = np.random.normal(loc=0, scale=0.2)
+
+                # if the sampled y is in range [-1, 1]
                 if (temp <= 1) and (temp >= -1):
                     y.append(temp)
                     break
+
+            # sampling x
             x.append(np.random.uniform(-1, 1))
+
         cords = np.vstack((np.array(y) * 90, np.array(x) * 180)).swapaxes(0, 1)
         cords = sphere2xyz(torch.from_numpy(cords))
+
         return cords
 
     def summary(self, samples):
+        # reorganize predictions
         obs = None
+
         for index in range(int(len(samples) / 2)):
             name = 'obs_x_' + str(index + 1)
+
+            # convert predictions to standard 3D coordinates (x, y, z), where x^2 + y^2+ z^2 = 1
             temp = samples[name].reshape([-1, 3])
             its_sum = torch.sqrt(temp[:, 0] ** 2 + temp[:, 1] ** 2 + temp[:, 2] ** 2)
             temp = temp / torch.unsqueeze(its_sum, 1)
+
+            # convert (x, y, z) to (lat, lon)
             if obs is not None:
                 obs = torch.cat((obs, torch.unsqueeze(xyz2plane(temp), dim=0)), dim=0)
             else:
                 obs = torch.unsqueeze(xyz2plane(temp), dim=0)
+
+        # let ``n_scanpaths'' to be the first dim
         obs = torch.transpose(obs, 0, 1)
+
         return obs
 
     def predict(self):
@@ -61,8 +79,7 @@ class Inference():
                 # the element in test_mask = 0 if the required length is reached,
                 # e.g., [1 1 1 1 0 0...] means producing a 4-second scanpath (noting the max length = self.length);
                 # here we consistently produce scanpaths with a length of self.length;
-                # modify the length_tensor and test_mask if you want to produce variable-length scanpaths.
-                length_tensor = (torch.ones(self.n_scanpaths) * self.length).int()
+                # modify the test_mask if you want to produce variable-length scanpaths.
                 test_mask = torch.ones([self.n_scanpaths, self.length])
 
                 test_batch = _scanpaths.cuda()
@@ -88,12 +105,16 @@ class Inference():
                     save_name = img.split('.')[0] + '.npy'
                     np.save(os.path.join(self.output_path, save_name), scanpaths)
 
-                    print('Begin to plot scanpaths')
+                    if self.if_plot:
+                        # plot 20 scanpaths
+                        print('Begin to plot scanpaths')
 
-                    # plot 20 scanpaths
-                    if not os.path.exists(self.output_path):
-                        os.makedirs(self.output_path)
-                    plot_scanpaths(scanpaths, img_path, length_tensor.numpy(), save_path=self.output_path)
+                        length_tensor = (torch.ones(self.n_scanpaths) * self.length).int()
+
+                        if not os.path.exists(self.output_path):
+                            os.makedirs(self.output_path)
+
+                        plot_scanpaths(scanpaths, img_path, length_tensor.numpy(), save_path=self.output_path)
 
 
 if __name__ == '__main__':
@@ -107,5 +128,6 @@ if __name__ == '__main__':
                        img_path='./demo/input',
                        n_scanpaths=100,
                        length=20,
-                       output_path='./demo/output')
+                       output_path='./demo/output',
+                       if_plot=True)
     mytest.predict()
