@@ -3,7 +3,6 @@ import torch.nn.parallel
 import torch.utils.data
 import numpy as np
 import os
-from tqdm import tqdm
 import config
 import suppor_lib
 import pickle
@@ -13,9 +12,17 @@ import pickle as pck
     Description: data_process.py is used to obtain Ground-truth scanpaths 
     for model training and evaluation. We give an example of how we process 
     Sitzmann database (https://github.com/vsitzmann/vr-saliency). One can use 
-    this code for preparing his/her own training set.
+    this code for preparing his/her own training set:
+    
+        # 1. Rotate 360-degree images for data augmentation using:
+             suppor_lib.rotate_images(input_path, output_path)
+        
+        # 2. Modify the configure in config.py
+        
+        # 3. Modify and run data_process.py.
     
     The data format of ``output.pkl`` is:
+    
     [data]
         ['train']
             ['image1_name']
@@ -218,23 +225,22 @@ class Sitzmann_Dataset():
             temple_gaze = np.zeros((len(run['data']), 30, 2))
             scanpath_id = 0
 
-            " save scanpath data to ``temple_gaze`` "
+            " save original scanpath data to ``temple_gaze`` "
             for data in run['data']:
                 relevant_fixations = data['gaze_lat_lon']
 
                 if len(relevant_fixations.shape) > 1:
-                    norm_coords = self.sample_gaze_points(relevant_fixations)
+                    sphere_coords = self.sample_gaze_points(relevant_fixations)
                 else:
                     continue
 
                 " handle invalid set"
-                norm_coords, throw = self.handle_empty(norm_coords)
+                sphere_coords, throw = self.handle_empty(sphere_coords)
 
                 if throw:  # throw this scanpath if too many invalid values.
                     continue
                 else:
-                    norm_coords = torch.from_numpy(norm_coords.copy())
-                    temple_gaze[scanpath_id] = norm_coords
+                    temple_gaze[scanpath_id] = torch.from_numpy(sphere_coords)
                     scanpath_id += 1
 
             temple_gaze = temple_gaze[:scanpath_id]
@@ -254,8 +260,6 @@ class Sitzmann_Dataset():
 
                     self.info['train']['num_scanpath'] += 1
 
-                self.info['train']['num_image'] += 1
-
                 dic = {"image": image, "scanpaths": gaze_}
 
                 twoDict(self.image_and_scanpath_dict, "train",
@@ -268,7 +272,8 @@ class Sitzmann_Dataset():
 
                 image_id += 1
 
-        self.info['train']['scanpath_length'], self.info['test']['scanpath_length'] = self.duration, self.duration
+        self.info['train']['num_image'] = image_id
+        self.info['train']['scanpath_length'] = self.duration
 
     def get_test_set(self):
 
@@ -319,6 +324,7 @@ class Sitzmann_Dataset():
             image_id += 1
 
         self.info['test']['num_image'] = image_id
+        self.info['test']['scanpath_length'] = self.duration
 
     def run(self):
         ''
@@ -344,16 +350,9 @@ class Sitzmann_Dataset():
         return self.image_and_scanpath_dict
 
 
-
-
 if __name__ == '__main__':
 
-    # 1. Rotate 360-degree images for data augmentation using:
-    # suppor_lib.rotate_images(input_path, output_path)
-
-    # 2. Modify the configure in config.py
-
-    # 3. Prepare the dataset.
     Datasets = ['Sitzmann']
+
     for dataset in Datasets:
         forward(dataset)
