@@ -15,9 +15,11 @@ pip install -r requirements.txt
 
 # Training  
 1. To reproduce the training and validation dataset, please referring to [data_process.py](https://github.com/xiangjieSui/ScanDMM/blob/master/data_process.py). Alternatively, using the [ready-to-use data](https://github.com/xiangjieSui/ScanDMM/tree/master/Datasets).
-2. Modify [training parameters](https://github.com/xiangjieSui/ScanDMM/blob/master/config.py) to satisfy your configuration.
-3. Runing [train.py](https://github.com/xiangjieSui/ScanDMM/blob/master/train.py)
-4. Check the training log and checkpoints in Log (created automatically) and [./model](https://github.com/xiangjieSui/ScanDMM/tree/master/model) files, respectively.
+2. Execute:  
+```
+python train.py --seed=1234 --dataset='./Datasets/Sitzmann.pkl' --lr=0.0003 --bs=64 --epochs=500 --save_root='./model/'
+```
+3. Check the training log and checkpoints in Log (created automatically) and [./model](https://github.com/xiangjieSui/ScanDMM/tree/master/model) files, respectively.
 
 # Test  
 1. Prepare the test images and put them in a folder (e.g, [./demo/input](https://github.com/xiangjieSui/ScanDMM/tree/master/demo/input))  
@@ -57,3 +59,5 @@ print(scanpaths.shape)
 }
 ```
 
+Acknowledgment
+The author would like to thank Daniel Martin for publishing [ScanGAN](https://github.com/DaniMS-ZGZ/ScanGAN360) model and visualization functions.
