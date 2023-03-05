@@ -1,5 +1,6 @@
 import logging
 import time
+from argparse import ArgumentParser
 from datetime import datetime
 from os.path import exists
 import os
@@ -29,12 +30,12 @@ class Train():
         console.setLevel(logging.INFO)
         logging.getLogger("").addHandler(console)
         logging.info('Train_set:{}\nLearning Rate:{}\nBatch Size:{}\nEpochs:{}\n'.format(
-            self.args.train_set, self.args.learning_rate, self.args.mini_batch_size, self.args.num_epochs
+            self.args.dataset, self.args.lr, self.args.bs, self.args.epochs
         ))
 
     def setup_adam(self):
         params = {
-            "lr": self.args.learning_rate,
+            "lr": self.args.lr,
             "betas": (0.96, 0.999),
             "clip_norm": 10,
             "lrd": self.args.lr_decay,
@@ -134,13 +135,13 @@ class Train():
             annealing_factor = 1.0
 
         # compute which sequences in the training set we should grab
-        mini_batch_start = which_mini_batch * self.args.mini_batch_size
-        mini_batch_end = np.min([(which_mini_batch + 1) * self.args.mini_batch_size, self.N_sequences])
+        mini_batch_start = which_mini_batch * self.args.bs
+        mini_batch_end = np.min([(which_mini_batch + 1) * self.args.bs, self.N_sequences])
         mini_batch_indices = shuffled_indices[mini_batch_start:mini_batch_end]
 
         # grab a fully prepped mini-batch using the helper function in the data loader
         (mini_batch, mini_batch_reversed, mini_batch_mask, mini_batch_seq_lengths, mini_batch_images) = \
-            self.get_mini_batch(mini_batch_indices, self.sequences, self.seq_lengths, self.images, cuda=self.args.use_cuda)
+            self.get_mini_batch(mini_batch_indices, self.sequences, self.seq_lengths, self.images, cuda=config.use_cuda)
 
         # do an actual gradient step
         loss = self.svi.step(
@@ -167,15 +168,15 @@ class Train():
         self.images = train_data["images"]
         self.N_sequences = len(self.seq_lengths)
         self.N_time_slices = float(torch.sum(self.seq_lengths))
-        self.N_mini_batches = int(self.N_sequences / self.args.mini_batch_size +
-                                  int(self.N_sequences % self.args.mini_batch_size > 0))
+        self.N_mini_batches = int(self.N_sequences / self.args.bs +
+                                  int(self.N_sequences % self.args.bs > 0))
 
         logging.info("N_train_data: %d\t avg. training seq. length: %.2f\t N_mini_batches: %d"
                      % (self.N_sequences, self.seq_lengths.float().mean(), self.N_mini_batches))
 
         times = [time.time()]
 
-        for epoch in range(self.args.num_epochs):
+        for epoch in range(self.args.epochs):
             epoch_nll = 0.0
             shuffled_indices = torch.randperm(self.N_sequences)
 
@@ -189,24 +190,50 @@ class Train():
                          % (epoch, epoch_nll / self.N_time_slices, epoch_time))
 
             save_name = 'model_lr-{}_bs-{}_epoch-{}.pkl'.format(
-                self.args.learning_rate, self.args.mini_batch_size, epoch)
+                self.args.lr, self.args.bs, epoch)
 
             self.save_checkpoint(save_name)
 
 
 if __name__ == '__main__':
+    parser = ArgumentParser(description='ScanDMM')
+    parser.add_argument('--seed', default=config.seed, type=int,
+                        help='seed, default = 1234')
+    parser.add_argument('--dataset', default='./Datasets/Sitzmann.pkl', type=str,
+                        help='dataset path, default = ./Datasets/Sitzmann.pkl')
+    parser.add_argument('--lr', default=config.learning_rate, type=float,
+                        help='learning rate, default = 0.0003')
+    parser.add_argument('--bs', default=config.mini_batch_size, type=int,
+                        help='mini batch size, default = 64')
+    parser.add_argument('--lr_decay', default=config.lr_decay, type=int,
+                        help='learning rate decay, default = 0.99998')
+    parser.add_argument('--epochs', default=config.num_epochs, type=int,
+                        help='num_epochs, default = 500')
+    parser.add_argument('--weight_decay', default=config.weight_decay, type=float,
+                        help='learning rate decay, default = 2.0')
+    parser.add_argument('--annealing_epochs', default=config.annealing_epochs, type=int,
+                        help='KL annealing, default = 10')
+    parser.add_argument('--minimum_annealing_factor', default=config.minimum_annealing_factor, type=float,
+                        help='minimum KL annealing factor, default = 0.2')
+    parser.add_argument('--load_model', default=None, type=str,
+                        help='path of pre-trained model, default = None')
+    parser.add_argument('--load_opt', default=None, type=str,
+                        help='path of optimizer state, default = None')
+    parser.add_argument('--save_root', default=config.save_root, type=str,
+                        help='model save path, default = ./model/')
 
-    torch.manual_seed(config.seed)
+    args = parser.parse_args()
 
+    torch.manual_seed(args.seed)
     dmm = DMM(use_cuda=config.use_cuda)
 
     train_log = './Log/lr-{}_bs-{}_dy-{}_epo-{}_{}.txt'.format(
-        config.learning_rate, config.mini_batch_size,
-        config.lr_decay, config.num_epochs,
+        args.lr, args.bs,
+        args.lr_decay, args.epochs,
         datetime.now().strftime("%I:%M%p on %B %d, %Y"))
 
-    train_dict = pickle.load(open('./Datasets/' + config.train_set + '.pkl', 'rb'))
+    train_dict = pickle.load(open(args.dataset, 'rb'))
 
-    trainer = Train(dmm, train_dict, config, train_log)
+    trainer = Train(dmm, train_dict, args, train_log)
 
     trainer.run()
