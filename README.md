@@ -1,7 +1,8 @@
 # ScanDMM: A Deep Markov Model of Scanpath Prediction for 360° Images [CVPR2023]
 
 [[Paper]]() [[openReview]]()  
-[![Watch the video](https://i.imgur.com/vKb2F1B.png)](https://www.youtube.com/watch?v=bEWBnG5GXsU)
+[![Watch the video](https://img.youtube.com/vi/bEWBnG5GXsU/maxresdefault.jpg)](https://youtu.be/bEWBnG5GXsU)
+
 
 # Bibtex
 ```
