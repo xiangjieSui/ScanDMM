@@ -140,7 +140,7 @@ class Train():
 
         # grab a fully prepped mini-batch using the helper function in the data loader
         (mini_batch, mini_batch_reversed, mini_batch_mask, mini_batch_seq_lengths, mini_batch_images) = \
-            self.get_mini_batch(mini_batch_indices, self.sequences, self.seq_lengths, self.images, cuda=self.args.cuda)
+            self.get_mini_batch(mini_batch_indices, self.sequences, self.seq_lengths, self.images, cuda=self.args.use_cuda)
 
         # do an actual gradient step
         loss = self.svi.step(
@@ -198,9 +198,7 @@ if __name__ == '__main__':
 
     torch.manual_seed(config.seed)
 
-    os.environ["CUDA_VISIBLE_DEVICES"] = "1"
-
-    dmm = DMM(use_cuda=config.cuda)
+    dmm = DMM(use_cuda=config.use_cuda)
 
     train_log = './Log/lr-{}_bs-{}_dy-{}_epo-{}_{}.txt'.format(
         config.learning_rate, config.mini_batch_size,
