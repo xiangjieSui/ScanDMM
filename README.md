@@ -59,5 +59,5 @@ print(scanpaths.shape)
 }
 ```
 
-Acknowledgment
+# Acknowledgment
 The author would like to thank Daniel Martin for publishing [ScanGAN](https://github.com/DaniMS-ZGZ/ScanGAN360) model and visualization functions.
