@@ -13,7 +13,7 @@ This is the repository of paper：
 # Implementation version:
 Pytorch 1.8.1 & CUDA 10.1.  
 Please referring to [requirements.txt](https://github.com/xiangjieSui/ScanDMM/blob/master/requirement.txt) for details.  
-If your CUDA version is 10.1, you can also directly execute the following command to install the environment：  
+If your CUDA version is 10.1, you can directly execute the following command to install the environment：  
 ```
 conda create -n scandmm python==3.7  
 conda activate scandmm
