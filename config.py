@@ -12,7 +12,6 @@ dic_Sitzmann = {
 'Parameters for training'
 image_size = [128, 256]
 seed = 1234
-train_set: str = 'Sitzmann'
 num_epochs = 500
 learning_rate = 0.0003
 lr_decay = 0.99998
