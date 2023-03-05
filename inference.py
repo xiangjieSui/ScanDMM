@@ -1,5 +1,4 @@
 from pyro.infer import Predictive
-import time
 from models import DMM
 from suppor_lib import *
 
@@ -58,29 +57,30 @@ class Inference():
         return obs
 
     def predict(self):
-        # set num_samples larger to produce more scanpaths (n_scanpaths * num_sample) without costing GPU memory
-        # e.g., by setting num_sample = 2, we can produce n_scanpaths * 2 scanpaths.
-        # HOWEVER, increasing num_samples will case a longer time for prediction.
+        # set num_samples larger if your GPU/CPU is out of memory
+        # e.g., by setting num_sample = 2 (default = 1), we might only need 1/2 memory.
+        # HOWEVER, increasing num_samples resulting a little longer time for prediction.
         # adjust the parameters: num_samples, n_scanpaths to satisfy your situation.
-        predictive = Predictive(self.dmm.model, num_samples=1)
+        num_samples = 1
+        rep_num = self.n_scanpaths // num_samples
+        predictive = Predictive(self.dmm.model, num_samples=num_samples)
 
         for _, _, files in os.walk(self.img_path):
             num_img = len(files)
             count = 0
             for img in files:
                 count += 1
-                times = [time.time()]
                 img_path = os.path.join(self.img_path, img)
-                image_tensor = torch.unsqueeze(image_process(img_path), dim=0).repeat([self.n_scanpaths, 1, 1, 1])
+                image_tensor = torch.unsqueeze(image_process(img_path), dim=0).repeat([rep_num, 1, 1, 1])
                 starting_points = torch.unsqueeze(
-                    self.create_random_starting_points(self.n_scanpaths), dim=1).to(torch.float32)
+                    self.create_random_starting_points(rep_num), dim=1).to(torch.float32)
                 _scanpaths = starting_points.repeat([1, self.length, 1])
 
                 # the element in test_mask = 0 if the required length is reached,
                 # e.g., [1 1 1 1 0 0...] means producing a 4-second scanpath (noting the max length = self.length);
                 # here we consistently produce scanpaths with a length of self.length;
                 # modify the test_mask if you want to produce variable-length scanpaths.
-                test_mask = torch.ones([self.n_scanpaths, self.length])
+                test_mask = torch.ones([rep_num, self.length])
 
                 test_batch = _scanpaths.cuda()
                 test_batch_mask = test_mask.cuda()
@@ -97,11 +97,9 @@ class Inference():
 
                     # scanpaths.shape = [n_scanpaths, n_length, 2]
                     scanpaths = self.summary(samples).cpu().numpy()
-                    times.append(time.time())
-                    time_cost = times[-1] - times[-2]
 
-                    print('[{}]/[{}]:{} {} scanpaths are produced\t(time cost = {:.3f} sec)\nSaving to {}'
-                          .format(count, num_img, img, scanpaths.shape[0], time_cost, self.output_path))
+                    print('[{}]/[{}]:{} {} scanpaths are produced\nSaving to {}'
+                          .format(count, num_img, img, scanpaths.shape[0], self.output_path))
                     save_name = img.split('.')[0] + '.npy'
                     np.save(os.path.join(self.output_path, save_name), scanpaths)
 
@@ -119,10 +117,8 @@ class Inference():
 
 if __name__ == '__main__':
 
-    os.environ["CUDA_VISIBLE_DEVICES"] = "0"
-
-    dmm = DMM(use_cuda=True)
-    dmm.load_state_dict(torch.load('./model/lev_lr-0.0003_bs-64_dy-0.99998_epo-601_seed-1234.pkl'))
+    dmm = DMM(use_cuda=config.use_cuda)
+    dmm.load_state_dict(torch.load('./model/model_lr-0.0003_bs-64_epoch-435.pkl'))
 
     mytest = Inference(model=dmm,
                        img_path='./demo/input',
