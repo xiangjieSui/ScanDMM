@@ -60,4 +60,4 @@ print(scanpaths.shape)
 ```
 
 # Acknowledgment
-The author would like to thank Daniel Martin for publishing [ScanGAN](https://github.com/DaniMS-ZGZ/ScanGAN360) model and visualization functions.
+The author would like to thank Daniel Martin for publishing [ScanGAN](https://github.com/DaniMS-ZGZ/ScanGAN360) model and visualization functions. And thank Bingham Eli et al. for the implement of [Pyro](https://github.com/pyro-ppl/pyro).
