@@ -10,9 +10,11 @@ import pickle as pck
 
 '''
     Description: data_process.py is used to obtain Ground-truth scanpaths 
-    for model training and evaluation. We give an example of how we process 
-    Sitzmann database (https://github.com/vsitzmann/vr-saliency). One can use 
-    this code for preparing his/her own training set:
+    for model training and validation. We give an example of how we process 
+    Sitzmann dataset (https://github.com/vsitzmann/vr-saliency). 
+    
+    We provide ready-to-use training & validation data in './Datasets/Sitzmann.pkl'
+    You can also follow the 3 steps to reproduce the dataset:
     
         # 1. Rotate 360-degree images for data augmentation using:
              suppor_lib.rotate_images(input_path, output_path)
@@ -21,7 +23,7 @@ import pickle as pck
         
         # 3. Modify and run data_process.py.
     
-    The data format of ``output.pkl`` is:
+    Data format:
     
     [data]
         ['train']
@@ -328,7 +330,7 @@ class Sitzmann_Dataset():
 
     def run(self):
         ''
-        ' @@ PATH PREPARE '
+        ' PATH PREPARE '
         for file_name in os.listdir(self.images_path):
             if ".png" in file_name:
                 if file_name in self.test_set:
@@ -336,15 +338,15 @@ class Sitzmann_Dataset():
                 else:
                     self.images_train_list.append(os.path.join(self.images_path, file_name))
 
-        ' @@ GET TRAINING SET '
+        ' GET TRAINING SET '
         print('\nProcessing [Training Set]\n')
         self.get_train_set()
 
-        ' @@ GET TEST SET '
+        ' GET TEST SET '
         print('\nProcessing [Test Set]\n')
         self.get_test_set()
 
-        ' @@ RECORD DATABASE INFORMATION '
+        ' RECORD DATABASE INFORMATION '
         self.image_and_scanpath_dict['info'] = self.info
 
         return self.image_and_scanpath_dict
