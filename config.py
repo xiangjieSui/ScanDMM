@@ -1,3 +1,4 @@
+import torch
 
 DATABASE_ROOT = '/home/......'
 
@@ -7,10 +8,9 @@ dic_Sitzmann = {
     'TEST_SET': ['cubemap_0000.png', 'cubemap_0006.png', 'cubemap_0009.png']
 }
 
-image_size = [128, 256]
-FOV = 110
 
 'Parameters for training'
+image_size = [128, 256]
 seed = 1234
 train_set: str = 'Sitzmann'
 num_epochs = 500
@@ -23,5 +23,9 @@ minimum_annealing_factor = 0.2
 load_model = None
 load_opt = None
 save_root = './model/'
-cuda = True
+if torch.cuda.is_available():
+    use_cuda = True
+else:
+    use_cuda = False
+
 
