@@ -24,7 +24,7 @@ pip install -r requirements.txt
 1. To reproduce the training and validation dataset, please referring to [data_process.py](https://github.com/xiangjieSui/ScanDMM/blob/master/data_process.py). Alternatively, using the [ready-to-use data](https://github.com/xiangjieSui/ScanDMM/tree/master/Datasets).
 2. Modify [training parameters](https://github.com/xiangjieSui/ScanDMM/blob/master/config.py) to satisfy your configuration.
 3. Runing [train.py](https://github.com/xiangjieSui/ScanDMM/blob/master/train.py)
-4. Check the training log and checkpoint in Log (created automatically) and [./model](https://github.com/xiangjieSui/ScanDMM/tree/master/model) files, respectively.
+4. Check the training log and checkpoints in Log (created automatically) and [./model](https://github.com/xiangjieSui/ScanDMM/tree/master/model) files, respectively.
 
 # Test  
 1. Prepare the test images and put them in a folder (e.g, [./demo/input](https://github.com/xiangjieSui/ScanDMM/tree/master/demo/input))  
