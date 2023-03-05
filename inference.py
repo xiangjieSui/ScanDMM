@@ -1,3 +1,5 @@
+from argparse import ArgumentParser
+
 from pyro.infer import Predictive
 from models import DMM
 from suppor_lib import *
@@ -116,14 +118,28 @@ class Inference():
 
 
 if __name__ == '__main__':
+    parser = ArgumentParser(description='ScanDMM')
+    parser.add_argument('--model', default='./model/model_lr-0.0003_bs-64_epoch-435.pkl', type=str,
+                        help='model path, default = ./model/model_lr-0.0003_bs-64_epoch-435.pkl')
+    parser.add_argument('--inDir', default='./demo/input', type=str,
+                        help='image path, default = ./demo/input')
+    parser.add_argument('--outDir', default='./demo/output', type=str,
+                        help='output path, default = ./demo/output')
+    parser.add_argument('--n_scanpaths', default=200, type=int,
+                        help='number of produced scanpaths, default = 200')
+    parser.add_argument('--length', default=20, type=int,
+                        help='length of produced scanpaths, default = 20')
+    parser.add_argument('--if_plot', default=True, type=bool,
+                        help='plot scanpaths or not, default = True')
+    args = parser.parse_args()
 
     dmm = DMM(use_cuda=config.use_cuda)
-    dmm.load_state_dict(torch.load('./model/model_lr-0.0003_bs-64_epoch-435.pkl'))
+    dmm.load_state_dict(torch.load(args.model))
 
     mytest = Inference(model=dmm,
-                       img_path='./demo/input',
-                       n_scanpaths=100,
-                       length=20,
-                       output_path='./demo/output',
-                       if_plot=True)
+                       img_path=args.inDir,
+                       n_scanpaths=args.n_scanpaths,
+                       length=args.length,
+                       output_path=args.outDir,
+                       if_plot=args.if_plot)
     mytest.predict()
