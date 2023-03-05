@@ -1,6 +1,9 @@
-# ScanDMM
+# ScanDMM: A Deep Markov Model of Scanpath Prediction for 360° Images [CVPR2023]
 
-This is the repository of paper：  
+[[Paper]]() [[openReview]]()  
+[![Watch the video](https://i.imgur.com/vKb2F1B.png)](https://www.youtube.com/watch?v=bEWBnG5GXsU)
+
+# Bibtex
 ```
 @article{scandmm2023,
   title={ScanDMM: A Deep Markov Model of Scanpath Prediction for 360° Images},
@@ -10,7 +13,7 @@ This is the repository of paper：
 }
 ```
 
-# Implementation version:
+# Implementation version
 Pytorch 1.8.1 & CUDA 10.1.  
 Please referring to [requirements.txt](https://github.com/xiangjieSui/ScanDMM/blob/master/requirement.txt) for details.  
 If your CUDA version is 10.1, you can directly execute the following command to install the environment：  
