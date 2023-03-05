@@ -3,17 +3,6 @@
 [[Paper]]() [[openReview]](https://openreview.net/forum?id=Z5RSvPEbyK)  
 [![Watch the video](https://img.youtube.com/vi/bEWBnG5GXsU/maxresdefault.jpg)](https://youtu.be/bEWBnG5GXsU)
 
-
-# Bibtex
-```
-@article{scandmm2023,
-  title={ScanDMM: A Deep Markov Model of Scanpath Prediction for 360° Images},
-  author={Xiangjie Sui and Yuming Fang and Hanwei Zhu and Shiqi Wang and Zhou Wang},
-  journal = {IEEE Conference on Computer Vision and Pattern Recognition}, 
-  year={2023}
-}
-```
-
 # Implementation version
 Pytorch 1.8.1 & CUDA 10.1.  
 Please referring to [requirements.txt](https://github.com/xiangjieSui/ScanDMM/blob/master/requirement.txt) for details.  
@@ -47,6 +36,16 @@ sp_P48_5376x2688.png
 scanpaths = np.load(P48_5376x2688.npy)
 print(scanpaths.shape)
 (200, 20, 2)
+```
+
+# Bibtex
+```
+@article{scandmm2023,
+  title={ScanDMM: A Deep Markov Model of Scanpath Prediction for 360° Images},
+  author={Xiangjie Sui and Yuming Fang and Hanwei Zhu and Shiqi Wang and Zhou Wang},
+  journal = {IEEE Conference on Computer Vision and Pattern Recognition}, 
+  year={2023}
+}
 ```
 
 ```
