@@ -37,6 +37,15 @@ scanpaths = np.load(P48_5376x2688.npy)
 print(scanpaths.shape)
 (200, 20, 2)
 ```
+```
+sp_P8_7500x3750.png
+```
+![Mu](https://github.com/xiangjieSui/ScanDMM/blob/master/demo/output/sp_P8_7500x3750.png)
+```
+scanpaths = np.load(P8_7500x3750.npy)
+print(scanpaths.shape)
+(200, 20, 2)
+```
 
 # Bibtex
 ```
@@ -46,15 +55,5 @@ print(scanpaths.shape)
   journal = {IEEE Conference on Computer Vision and Pattern Recognition}, 
   year={2023}
 }
-```
-
-```
-sp_P8_7500x3750.png
-```
-![Mu](https://github.com/xiangjieSui/ScanDMM/blob/master/demo/output/sp_P8_7500x3750.png)
-```
-scanpaths = np.load(P8_7500x3750.npy)
-print(scanpaths.shape)
-(200, 20, 2)
 ```
 
