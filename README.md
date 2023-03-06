@@ -64,4 +64,4 @@ print(scanpaths.shape)
 ```
 
 # Acknowledgment
-The author would like to thank [Kede Ma](https://kedema.org/) for his inspiration, [Hanwei Zhu](https://github.com/h4nwei) for his dedication, Daniel Martin for publishing [ScanGAN](https://github.com/DaniMS-ZGZ/ScanGAN360) model and visualization functions, and Bingham Eli et al. for the implementation of [Pyro](https://github.com/pyro-ppl/pyro).
+The author would like to thank [Kede Ma](https://kedema.org/) for his inspiration, Daniel Martin et al. for publishing [ScanGAN](https://github.com/DaniMS-ZGZ/ScanGAN360) model and visualization functions, and Bingham Eli et al. for the implementation of [Pyro](https://github.com/pyro-ppl/pyro).
