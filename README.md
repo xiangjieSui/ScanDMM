@@ -27,7 +27,7 @@ python train.py --seed=1234 --dataset='./Datasets/Sitzmann.pkl' --lr=0.0003 --bs
 
 # Test  
 1. Prepare the test images and put them in a folder (e.g, [./demo/input](https://github.com/xiangjieSui/ScanDMM/tree/master/demo/input))  
-2. Create an folder to store the results (e.g, [./demo/output](https://github.com/xiangjieSui/ScanDMM/tree/master/demo/output)) 
+2. Create a folder to store the results (e.g, [./demo/output](https://github.com/xiangjieSui/ScanDMM/tree/master/demo/output)) 
 3. A pre-trained weights (e.g, ['./model/model_lr-0.0003_bs-64_epoch-435.pkl'](https://github.com/xiangjieSui/ScanDMM/tree/master/model))  
 4. Execute:
 ```
