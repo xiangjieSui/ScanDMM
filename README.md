@@ -31,8 +31,8 @@ python train.py --seed=1234 --dataset='./Datasets/Sitzmann.pkl' --lr=0.0003 --bs
 4. Execute:
 ```
 python inference.py --model='./model/model_lr-0.0003_bs-64_epoch-435.pkl' --inDir='./demo/input' --outDir='./demo/output' --n_scanpaths=200 --length=20 if_plot==True
-```
-* Modify n_scanpaths and length to change the number and length of the produced scanpaths. Please referring to inference.py for more details about produced scanpaths.  
+```  
+* Modify *n_scanpaths* and *length* to change the number and length of the produced scanpaths. Please referring to inference.py for more details about the produced scanpaths.  
 5. Check the results:  
 ``` 
 sp_P48_5376x2688.png
