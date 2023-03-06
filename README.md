@@ -5,7 +5,8 @@
     
     
 :point_down: Chlick the video for more samples.
-[![Watch the video](https://img.youtube.com/vi/bEWBnG5GXsU/maxresdefault.jpg)](https://youtu.be/bEWBnG5GXsU)
+[![ScanDMM](https://res.cloudinary.com/marcomontalbano/image/upload/v1678076218/video_to_markdown/images/youtube--bEWBnG5GXsU-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://www.youtube.com/watch?v=bEWBnG5GXsU "ScanDMM")
+
 
 # Implementation version
 Pytorch 1.8.1 & CUDA 10.1.  
