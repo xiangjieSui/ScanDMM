@@ -93,7 +93,7 @@ def xyz2plane(threeD_cord, height_width=None):
 
 def plot_scanpaths(scanpaths, img_path, lengths, save_path, img_height=256, img_witdth=512):
     # Plot predicted scanpaths
-    # this code is modified on the basis of ScanGAN https://github.com/DaniMS-ZGZ/ScanGAN360/
+    # this code is on the basis of ScanGAN https://github.com/DaniMS-ZGZ/ScanGAN360/
 
     image = cv2.resize(matplotlib.image.imread(img_path), (img_witdth, img_height))
 
