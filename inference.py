@@ -97,7 +97,7 @@ class Inference():
                                          images=test_batch_images,
                                          predict=True)
 
-                    # scanpaths.shape = [n_scanpaths, n_length, 2]
+                    # scanpaths.shape = [n_scanpaths, lengths, 2]
                     scanpaths = self.summary(samples).cpu().numpy()
 
                     print('[{}]/[{}]:{} {} scanpaths are produced\nSaving to {}'
