@@ -22,7 +22,7 @@ class Inference():
             while True:
                 temp = np.random.normal(loc=0, scale=0.2)
 
-                # if the sampled y is in range [-1, 1]
+                # if the sampled y ranges in [-1, 1]
                 if (temp <= 1) and (temp >= -1):
                     y.append(temp)
                     break
