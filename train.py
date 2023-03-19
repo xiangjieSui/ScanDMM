@@ -205,7 +205,7 @@ if __name__ == '__main__':
                         help='learning rate, default = 0.0003')
     parser.add_argument('--bs', default=config.mini_batch_size, type=int,
                         help='mini batch size, default = 64')
-    parser.add_argument('--lr_decay', default=config.lr_decay, type=int,
+    parser.add_argument('--lr_decay', default=config.lr_decay, type=float,
                         help='learning rate decay, default = 0.99998')
     parser.add_argument('--epochs', default=config.num_epochs, type=int,
                         help='num_epochs, default = 500')
