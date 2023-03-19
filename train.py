@@ -210,7 +210,7 @@ if __name__ == '__main__':
     parser.add_argument('--epochs', default=config.num_epochs, type=int,
                         help='num_epochs, default = 500')
     parser.add_argument('--weight_decay', default=config.weight_decay, type=float,
-                        help='learning rate decay, default = 2.0')
+                        help='L2 regularization term, default = 2.0')
     parser.add_argument('--annealing_epochs', default=config.annealing_epochs, type=int,
                         help='KL annealing, default = 10')
     parser.add_argument('--minimum_annealing_factor', default=config.minimum_annealing_factor, type=float,
