@@ -42,6 +42,7 @@ sp_P48_5376x2688.png
 scanpaths = np.load(P48_5376x2688.npy)
 print(scanpaths.shape)
 (200, 20, 2)
+# (n_scanpaths, length, (y, x)). (y, x) are normalized coordinates in the range [0, 1] (y/x = 0 indicate the top/left edge).
 ```
 ```
 sp_P8_7500x3750.png
