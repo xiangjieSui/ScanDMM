@@ -47,7 +47,7 @@ class Inference():
             its_sum = torch.sqrt(temp[:, 0] ** 2 + temp[:, 1] ** 2 + temp[:, 2] ** 2)
             temp = temp / torch.unsqueeze(its_sum, 1)
 
-            # convert (x, y, z) to (lat, lon)
+            # convert 3D (x, y, z) to 2D (x, y)
             if obs is not None:
                 obs = torch.cat((obs, torch.unsqueeze(xyz2plane(temp), dim=0)), dim=0)
             else:
