@@ -97,7 +97,9 @@ class Inference():
                                          images=test_batch_images,
                                          predict=True)
 
-                    # scanpaths.shape = [n_scanpaths, lengths, 2]
+                    # scanpaths.shape = (n_scanpaths, lengths, 2)
+                    # the last dim indicates (y, x) that are normalized coordinates
+                    # in the range [0, 1] (y/x = 0 indicate the top/left edge).
                     scanpaths = self.summary(samples).cpu().numpy()
 
                     print('[{}]/[{}]:{} {} scanpaths are produced\nSaving to {}'
