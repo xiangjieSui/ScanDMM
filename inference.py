@@ -105,6 +105,10 @@ class Inference():
                     print('[{}]/[{}]:{} {} scanpaths are produced\nSaving to {}'
                           .format(count, num_img, img, scanpaths.shape[0], self.output_path))
                     save_name = img.split('.')[0] + '.npy'
+                    
+                    if not os.path.exists(self.output_path):
+                        os.makedirs(self.output_path)
+                        
                     np.save(os.path.join(self.output_path, save_name), scanpaths)
 
                     if self.if_plot:
@@ -112,9 +116,6 @@ class Inference():
                         print('Begin to plot scanpaths')
 
                         length_tensor = (torch.ones(self.n_scanpaths) * self.length).int()
-
-                        if not os.path.exists(self.output_path):
-                            os.makedirs(self.output_path)
 
                         plot_scanpaths(scanpaths, img_path, length_tensor.numpy(), save_path=self.output_path)
 
