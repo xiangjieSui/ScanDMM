@@ -1,8 +1,10 @@
 # ScanDMM: A Deep Markov Model of Scanpath Prediction for 360° Images [CVPR2023]
 
-[[Paper]](https://ece.uwaterloo.ca/~z70wang/publications/CVPR23_scanPath360Image.pdf)
-[[Presentation (YouTube)]](https://www.youtube.com/watch?v=noXCcFvXY2k)
-[[OpenReview]](https://openreview.net/forum?id=Z5RSvPEbyK)  
+[:sparkles:Paper](https://ece.uwaterloo.ca/~z70wang/publications/CVPR23_scanPath360Image.pdf)&ensp; &ensp;
+[:sparkles:Poster](https://cvpr2023.thecvf.com/media/PosterPDFs/CVPR%202023/21446.png?t=1684911665.5451589)&ensp; &ensp;
+[:sparkles:Presentation (YouTube)](https://www.youtube.com/watch?v=noXCcFvXY2k)&ensp; &ensp;
+[:sparkles:Slide](https://cvpr2023.thecvf.com/media/cvpr-2023/Slides/21446.pdf)&ensp; &ensp;
+[:sparkles:OpenReview](https://openreview.net/forum?id=Z5RSvPEbyK) &ensp; &ensp;
 
 
 https://user-images.githubusercontent.com/65707367/223019204-6948e71f-1f30-4659-9498-353ef74ed1c9.mp4
